@@ -1,38 +1,44 @@
 <template>
-    <section>FILTER</section>
-    <section>
-        <div class="controls">
-            <button>Refresh</button>
-            <router-link to="/register">Register as Mentor</router-link>
-        </div>
-        <ul v-if="hasMentors">
-            <mentor-item 
-            v-for="mentor in filteredMentors" 
-            :key="mentor.id"
-            :id="mentor.id"
-            :first-name="mentor.firstName"
-            :last-name="mentor.lastName"
-            :rate="mentor.hourlyRate"
-            :areas="mentor.areas"></mentor-item>
-        </ul>
-        <h3 v-else>No mentors found.</h3>
-    </section>
+  <section>FILTER</section>
+  <section>
+    <base-card>
+      <div class="controls">
+        <base-button mode="outline">Refresh</base-button>
+        <base-button link to="/register">Register as Mentor</base-button>
+      </div>
+      <ul v-if="hasMentors">
+        <mentor-item
+          v-for="mentor in filteredMentors"
+          :key="mentor.id"
+          :id="mentor.id"
+          :first-name="mentor.firstName"
+          :last-name="mentor.lastName"
+          :rate="mentor.hourlyRate"
+          :areas="mentor.areas"
+        ></mentor-item>
+      </ul>
+      <h3 v-else>No mentors found.</h3>
+    </base-card>
+  </section>
 </template>
  
 <script>
-import MentorItem from '@/components/mentors/MentorItem.vue';
+import MentorItem from "@/components/mentors/MentorItem.vue";
+import BaseCard from "@/components/ui/BaseCard.vue";
+import BaseButton from '@/components/ui/BaseButton.vue';
 
 export default {
-  components: { MentorItem },
-    computed: {
-        filteredMentors() {
-            return this.$store.getters['mentors/mentors']; //namespaced/getters
-        },
-        hasMentors(){
-            return this.$store.getters['mentors/hasMentors']
-        }
-    }
-}</script>
+  components: { MentorItem, BaseCard, BaseButton },
+  computed: {
+    filteredMentors() {
+      return this.$store.getters["mentors/mentors"]; //namespaced/getters
+    },
+    hasMentors() {
+      return this.$store.getters["mentors/hasMentors"];
+    },
+  },
+};
+</script>
 
 
 <style scoped>
