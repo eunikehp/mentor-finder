@@ -5,10 +5,24 @@
             <button>Refresh</button>
             <router-link to="/register">Register as Mentor</router-link>
         </div>
-        <ul>LIST OF MENTORS</ul>
+        <ul v-if="hasMentors">
+            <li v-for="mentor in filteredMentors" :key="mentor.id">
+                {{ mentor.firstName }}
+            </li>
+        </ul>
+        <h3 v-else>No mentors found.</h3>
     </section>
 </template>
  
 <script>
 
-export default {}</script>
+export default {
+    computed: {
+        filteredMentors() {
+            return this.$store.getters['mentors/mentors']; //namespaced/getters
+        },
+        hasMentors(){
+            return this.$store.getters['mentors/hasMentors']
+        }
+    }
+}</script>
