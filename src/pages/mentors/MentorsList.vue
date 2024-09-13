@@ -1,5 +1,7 @@
 <template>
-  <section>FILTER</section>
+  <section>
+    <mentor-filter @change-filter="setFilters"></mentor-filter>
+  </section>
   <section>
     <base-card>
       <div class="controls">
@@ -26,17 +28,44 @@
 import MentorItem from "@/components/mentors/MentorItem.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
 import BaseButton from '@/components/ui/BaseButton.vue';
+import MentorFilter from "@/components/mentors/MentorFilter.vue";
 
 export default {
-  components: { MentorItem, BaseCard, BaseButton },
+  components: { MentorItem, BaseCard, BaseButton, MentorFilter },
+  data(){
+    return {
+      activeFilters: {
+        frontend: true,
+        backend: true,
+        career: true,
+      }
+    }
+  },
   computed: {
     filteredMentors() {
-      return this.$store.getters["mentors/mentors"]; //namespaced/getters
+      const mentors = this.$store.getters["mentors/mentors"]; //namespaced/getters
+      return mentors.filter(mentor => {  //only show mentors that match the filter
+        if (this.activeFilters.frontend && mentor.areas.includes('frontend')) {
+          return true;
+        }
+        if (this.activeFilters.backend && mentor.areas.includes('backend')) {
+          return true;
+        }
+        if (this.activeFilters.career && mentor.areas.includes('career')) {
+          return true;
+        }
+        return false;
+      })
     },
     hasMentors() {
       return this.$store.getters["mentors/hasMentors"];
     },
   },
+  methods: {
+    setFilters(updatedFilters) {
+      this.activeFilters = updatedFilters;
+    }
+  }
 };
 </script>
 
