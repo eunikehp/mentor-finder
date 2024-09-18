@@ -1,64 +1,66 @@
 <template>
-    <form @submit.prevent="submitForm">
-        <div class="form-control">
-            <label for="firstname">Firstname</label>
-            <input type="text" id="firstname" v-model.trim="firstName"/>
-        </div>
-        <div class="form-control">
-            <label for="lastname">Lastname</label>
-            <input type="text" id="lastname" v-model.trim="lastName"/>
-        </div>
-        <div class="form-control">
-            <label for="description">Description</label>
-            <input type="text" id="description" v-model.trim="description"/>
-        </div>
-        <div class="form-control">
-            <label for="rate">Hourly Rate</label>
-            <input type="number" id="rate" v-model.number="rate" />
-        </div>
-        <div class="form-control">
-            <h3>Areas of Expertise</h3>
-            <div>
-                <input type="checkbox" id="frontend" value="frontend" v-model="areas"/>
-                <label for="frontend">Frontend Development</label>
-            </div>
-            <div>
-                <input type="checkbox" id="backend" value="backend" v-model="areas"/>
-                <label for="backend">Backend Development</label>
-            </div>
-            <div>
-                <input type="checkbox" id="career" value="career" v-model="areas"/>
-                <label for="career">Career Advisory</label>
-            </div>
-        </div>
-        <base-button>Register</base-button>
-    </form>
+  <form @submit.prevent="submitForm">
+    <div class="form-control">
+      <label for="firstname">Firstname</label>
+      <input type="text" id="firstname" v-model.trim="firstName" />
+    </div>
+    <div class="form-control">
+      <label for="lastname">Lastname</label>
+      <input type="text" id="lastname" v-model.trim="lastName" />
+    </div>
+    <div class="form-control">
+      <label for="description">Description</label>
+      <input type="text" id="description" v-model.trim="description" />
+    </div>
+    <div class="form-control">
+      <label for="rate">Hourly Rate</label>
+      <input type="number" id="rate" v-model.number="rate" />
+    </div>
+    <div class="form-control">
+      <h3>Areas of Expertise</h3>
+      <div>
+        <input type="checkbox" id="frontend" value="frontend" v-model="areas" />
+        <label for="frontend">Frontend Development</label>
+      </div>
+      <div>
+        <input type="checkbox" id="backend" value="backend" v-model="areas" />
+        <label for="backend">Backend Development</label>
+      </div>
+      <div>
+        <input type="checkbox" id="career" value="career" v-model="areas" />
+        <label for="career">Career Advisory</label>
+      </div>
+    </div>
+    <base-button>Register</base-button>
+  </form>
 </template>
 
 <script>
 export default {
-    data(){
-        return {
-            firstName: '',
-            lastName: '',
-            description: '',
-            rate: null,
-            areas: []
-        }
+  emits: ["save-data"],
+  data() {
+    return {
+      firstName: "",
+      lastName: "",
+      description: "",
+      rate: null,
+      areas: [],
+    };
+  },
+  methods: {
+    submitForm() {
+      const formData = {
+        first: this.firstName,
+        last: this.lastName,
+        rate: this.rate,
+        desc: this.description,
+        areas: this.areas,
+      };
+      console.log(formData);
+      this.$emit("save-data", formData);
     },
-    methods: {
-        submitForm() {
-            const formData = {
-                first: this.firstName,
-                last: this.lastName,
-                rate: this.rate,
-                desc: this.description,
-                areas: this.areas
-            };
-            console.log(formData)
-        }
-    }
-}
+  },
+};
 </script>
 
 
@@ -73,7 +75,7 @@ label {
   margin-bottom: 0.5rem;
 }
 
-input[type='checkbox'] + label {
+input[type="checkbox"] + label {
   font-weight: normal;
   display: inline;
   margin: 0 0 0 0.5rem;
@@ -94,13 +96,13 @@ textarea:focus {
   border-color: #108967;
 }
 
-input[type='checkbox'] {
+input[type="checkbox"] {
   display: inline;
   width: auto;
   border: none;
 }
 
-input[type='checkbox']:focus {
+input[type="checkbox"]:focus {
   outline: #108967 solid 1px;
 }
 
