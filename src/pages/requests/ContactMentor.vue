@@ -34,6 +34,13 @@ export default {
             }
             console.log(this.email, this.message)
 
+            this.$store.dispatch('requests/contactMentor', {
+              email: this.email,
+              message: this.message,
+              mentorId: this.$route.params.id
+            });
+
+            this.$router.replace('/mentors');
             
             
         }
