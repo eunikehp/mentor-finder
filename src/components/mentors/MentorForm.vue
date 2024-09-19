@@ -83,6 +83,7 @@ export default {
         areas: this.areas.val,
       };
       console.log(formData);
+      // sent the data from children to parent
       this.$emit("save-data", formData);
     },
     validateForm() {

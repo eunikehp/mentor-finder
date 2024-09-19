@@ -16,33 +16,34 @@
 </template>
 
 <script>
-
 export default {
     data() {
         return {
             email: '',
             message: '',
-            fromIsValid: true
-        }
+            fromIsValid:true,
+        };
     },
     methods: {
         submitForm(){
+            //validate the form
             this.formIsValid = true;
-            if(this.email === '' || !this.email.includes('@') || this.message === '') {
+            if(this.email === '' || 
+              !this.email.includes('@') || 
+              this.message === '') {
                 this.formIsValid = false;
                 return;
             }
             console.log(this.email, this.message)
 
+            //dispatch the input data to store
             this.$store.dispatch('requests/contactMentor', {
               email: this.email,
               message: this.message,
               mentorId: this.$route.params.id
             });
-
-            this.$router.replace('/mentors');
-            
-            
+            //redirect page
+            this.$router.replace('/mentors');   
         }
     }
 }</script>
