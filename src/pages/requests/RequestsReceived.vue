@@ -22,10 +22,12 @@ export default {
     components: { RequestItem },
     computed: {
         receivedRequests() {
-            return this.$store.getters['requests/requests'];
+            // return this.$store.getters['requests/requests'];
+            return this.$store.getters['requests/requestsForMentor'];
         },
         hasRequests() {
-            return this.$store.getters['requests/hasRequests'];
+            // return this.$store.getters['requests/hasRequests'];
+            return this.$store.getters['requests/mentorHasRequests'];
         }
     }
 }
