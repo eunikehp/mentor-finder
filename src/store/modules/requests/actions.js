@@ -6,6 +6,7 @@ export default {
             userEmail : payload.email,
             message: payload.message,
         };
+        //commit the mutation 
         context.commit('addRequest', newRequest); // (mutations name, new payload )
     }
 }

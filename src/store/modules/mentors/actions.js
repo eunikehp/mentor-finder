@@ -30,7 +30,38 @@ export default {
         context.commit('addMentor', { 
             ...mentorData,
             id: userId
-    });
+        });
+    },
+
+    // send request to load/get the mentors from firebase
+    // this action will be dispatched from any component that wants to trigger this loading process.
+    async loadMentors (context) {
+        const response = await fetch(`https://react-mentor-finder-default-rtdb.firebaseio.com/mentors.json`);
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            //error
+        }
+
+        //transform data we loaded
+        const mentors = [];
+
+        for(const key in responseData) { //get each mentorID as a key
+            //cunstruct a new mentor object
+            const mentor = {
+                id: key,
+                firstName: responseData[key].firstName, //to understand this, check structure data in the firebase
+                lastName: responseData[key].lastName,
+                description: responseData[key].description,
+                hourlyRate: responseData[key].hourlyRate,
+                areas: responseData[key].areas
+            };
+
+            mentors.push(mentor);
+        }
+
+        //commit the mutations to change the state in the Vuex store
+        context.commit('setMentors', mentors);
     }
 };
 
