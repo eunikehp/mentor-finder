@@ -6,9 +6,12 @@
     <base-card>
       <div class="controls">
         <base-button mode="outline" @click="loadMentors">Refresh</base-button>
-        <base-button v-if="!isMentor" link to="/register">Register as Mentor</base-button> <!-- button will show if user is not a mentor-->
+        <base-button v-if="!isMentor && !isLoading" link to="/register">Register as Mentor</base-button> <!-- button will show if user is not a mentor-->
       </div>
-      <ul v-if="hasMentors">
+      <div v-if="isLoading">
+        <base-spinner></base-spinner>
+      </div>
+      <ul v-else-if="hasMentors">
         <mentor-item
           v-for="mentor in filteredMentors"
           :key="mentor.id"
@@ -28,17 +31,19 @@
 import MentorItem from "@/components/mentors/MentorItem.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
 import BaseButton from '@/components/ui/BaseButton.vue';
+import BaseSpinner from "@/components/ui/BaseSpinner.vue";
 import MentorFilter from "@/components/mentors/MentorFilter.vue";
 
 export default {
-  components: { MentorItem, BaseCard, BaseButton, MentorFilter },
+  components: { MentorItem, BaseCard, BaseButton, MentorFilter, BaseSpinner },
   data(){
     return {
       activeFilters: {
         frontend: true,
         backend: true,
         career: true,
-      }
+      },
+      isLoading: false,
     }
   },
   computed: {
@@ -62,15 +67,18 @@ export default {
       })
     },
     hasMentors() {
-      return this.$store.getters["mentors/hasMentors"];
+      return this.$store.getters["mentors/hasMentors"] && !this.isLoading; 
+      // to tell list of mentors disappears if we are loading has mentor
     },
   },
   methods: {
     setFilters(updatedFilters) {
       this.activeFilters = updatedFilters;
     },
-    loadMentors(){
-      this.$store.dispatch('mentors/loadMentors'); //namespace/actions
+    async loadMentors(){
+      this.isLoading = true;
+      await this.$store.dispatch('mentors/loadMentors'); //namespace/actions
+      this.isLoading = false
     }
   },
   created() {
