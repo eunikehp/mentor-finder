@@ -18,7 +18,7 @@ export default {
             body: JSON.stringify(mentorData) //convert object into JSON format //sends a put request to this URL with this data
         });
 
-        // const responseData = await response.json();
+        // const responseData = await response.json(); //
         
         //check if the response is ok
         if(!response.ok) {
@@ -37,10 +37,13 @@ export default {
     // this action will be dispatched from any component that wants to trigger this loading process.
     async loadMentors (context) {
         const response = await fetch(`https://react-mentor-finder-default-rtdb.firebaseio.com/mentors.json`);
+        
         const responseData = await response.json();
 
         if (!response.ok) {
-            //error
+            //set error message
+            const error = new Error(responseData.message || 'Failed to fetch!');
+            throw error;
         }
 
         //transform data we loaded

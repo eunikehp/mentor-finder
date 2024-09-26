@@ -1,4 +1,7 @@
 <template>
+  <base-dialog :show="!!error" title="An error occured!" @close="handleError"> <!-- !! convert a string into a boolean -->
+    <p>{{  error }}</p>
+  </base-dialog>
   <section>
     <mentor-filter @change-filter="setFilters"></mentor-filter>
   </section>
@@ -33,9 +36,10 @@ import BaseCard from "@/components/ui/BaseCard.vue";
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseSpinner from "@/components/ui/BaseSpinner.vue";
 import MentorFilter from "@/components/mentors/MentorFilter.vue";
+import BaseDialog from '@/components/ui/BaseDialog.vue';
 
 export default {
-  components: { MentorItem, BaseCard, BaseButton, MentorFilter, BaseSpinner },
+  components: { MentorItem, BaseCard, BaseButton, MentorFilter, BaseSpinner, BaseDialog },
   data(){
     return {
       activeFilters: {
@@ -44,6 +48,7 @@ export default {
         career: true,
       },
       isLoading: false,
+      error: null
     }
   },
   computed: {
@@ -77,8 +82,15 @@ export default {
     },
     async loadMentors(){
       this.isLoading = true;
-      await this.$store.dispatch('mentors/loadMentors'); //namespace/actions
+      try { //to try execute this line , if failed we catch an error and do something
+        await this.$store.dispatch('mentors/loadMentors'); //namespace/actions
+      } catch (error) {
+        this.error = error.message || 'Something went wrong!';
+      }
       this.isLoading = false
+    },
+    handleError(){
+      this.error= null;
     }
   },
   created() {
