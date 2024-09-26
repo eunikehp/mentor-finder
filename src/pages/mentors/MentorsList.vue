@@ -8,7 +8,7 @@
   <section>
     <base-card>
       <div class="controls">
-        <base-button mode="outline" @click="loadMentors">Refresh</base-button>
+        <base-button mode="outline" @click="loadMentors(true)">Refresh</base-button>
         <base-button v-if="!isMentor && !isLoading" link to="/register">Register as Mentor</base-button> <!-- button will show if user is not a mentor-->
       </div>
       <div v-if="isLoading">
@@ -80,10 +80,10 @@ export default {
     setFilters(updatedFilters) {
       this.activeFilters = updatedFilters;
     },
-    async loadMentors(){
+    async loadMentors(refresh = false){
       this.isLoading = true;
       try { //to try execute this line , if failed we catch an error and do something
-        await this.$store.dispatch('mentors/loadMentors'); //namespace/actions
+        await this.$store.dispatch('mentors/loadMentors', {forceRefresh: refresh}); //namespace/actions
       } catch (error) {
         this.error = error.message || 'Something went wrong!';
       }

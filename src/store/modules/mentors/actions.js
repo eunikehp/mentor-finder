@@ -35,9 +35,15 @@ export default {
 
     // send request to load/get the mentors from firebase
     // this action will be dispatched from any component that wants to trigger this loading process.
-    async loadMentors (context) {
-        const response = await fetch(`https://react-mentor-finder-default-rtdb.firebaseio.com/mentors.json`);
+    async loadMentors (context, payload) {
+
+        // check if we should update , if not true, the rest code wont executed
+        // payload.forceRefresh to tell we need to refresh or not
+        if (!payload.forceRefresh && !context.getters.shouldUpdate) {
+            return;
+        }
         
+        const response = await fetch(`https://react-mentor-finder-default-rtdb.firebaseio.com/mentors.json`);
         const responseData = await response.json();
 
         if (!response.ok) {
@@ -65,6 +71,7 @@ export default {
 
         //commit the mutations to change the state in the Vuex store
         context.commit('setMentors', mentors);
+        context.commit('setFetchTimestamp');
     }
 };
 
