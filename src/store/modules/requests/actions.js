@@ -33,9 +33,10 @@ export default {
     //load all the requests for the currently active user
     async fetchRequests(context) {
         const mentorId = context.rootGetters.userId;
+        const token = context.rootGetters.token;
 
         console.log(mentorId);
-        const response = await fetch(`https://react-mentor-finder-default-rtdb.firebaseio.com/requests/${mentorId}.json`);
+        const response = await fetch(`https://react-mentor-finder-default-rtdb.firebaseio.com/requests/${mentorId}.json?auth=` + token);
         const responseData = await response.json();
 
         console.log(responseData);

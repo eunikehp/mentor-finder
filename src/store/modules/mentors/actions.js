@@ -12,8 +12,10 @@ export default {
             areas: data.areas
         };
 
+        const token = context.rootGetters.token; //use rootGetters because we access it from root store, not in this module
+
         // send the request to server, tells the firebase, data will be overwritten if it existed or created if didn't exist
-        const response = await fetch(`https://react-mentor-finder-default-rtdb.firebaseio.com/mentors/${userId}.json`, {
+        const response = await fetch(`https://react-mentor-finder-default-rtdb.firebaseio.com/mentors/${userId}.json?auth=` + token, {
             method: 'PUT' ,
             body: JSON.stringify(mentorData) //convert object into JSON format //sends a put request to this URL with this data
         });
