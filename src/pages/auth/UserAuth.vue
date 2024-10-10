@@ -1,9 +1,15 @@
 <template>
   <div>
-    <base-dialog :show='!!error' title='An error occured' @close="handleError"> <!-- !! is to convert it into Boolean-->
-        <p>{{ error }}</p>
-    </base-dialog> 
-    <base-dialog :show='isLoading' title='Authenticating...' fixed></base-dialog> <!-- fixed = without close button-->
+    <base-dialog :show="!!error" title="An error occured" @close="handleError">
+      <!-- !! is to convert it into Boolean-->
+      <p>{{ error }}</p>
+    </base-dialog>
+    <base-dialog
+      :show="isLoading"
+      title="Authenticating..."
+      fixed
+    ></base-dialog>
+    <!-- fixed = without close button-->
     <base-card>
       <form @submit.prevent="submitForm">
         <div class="form-control">
@@ -71,15 +77,16 @@ export default {
 
       this.isLoading = true;
 
+      const actionPayload = {
+        email: this.email,
+        password: this.password,
+      };
       try {
         //send HTTP request
         if (this.mode === "login") {
-          //...
+          await this.$store.dispatch("login", actionPayload);
         } else {
-          await this.$store.dispatch("signup", {
-            email: this.email,
-            password: this.password,
-          });
+          await this.$store.dispatch("signup", actionPayload);
         }
       } catch (err) {
         this.error = err.message || "Failed to authenticate, try later.";
@@ -95,8 +102,8 @@ export default {
       }
     },
     handleError() {
-        this.error = null;
-    }
+      this.error = null;
+    },
   },
 };
 </script>
