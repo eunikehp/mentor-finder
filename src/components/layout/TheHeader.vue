@@ -6,20 +6,26 @@
                 <li><router-link to="/mentors">All Mentors</router-link></li>
                 <li v-if="isLoggedIn"><router-link to="/requests">Requests</router-link></li>
                 <li v-else><router-link to="/auth">Login</router-link></li>
+                <li v-if="isLoggedIn"><base-button @click="logout">Logout</base-button></li>
             </ul>
         </nav>
     </header>
 </template>
 
 <script>
-
 export default {
   computed: {
-    isLoggedIn (){
+    isLoggedIn() {
       return this.$store.getters.isAuthenticated;
+    },
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout')
     }
   }
-}</script>
+};
+</script>
 
 <style scoped>
 header {
@@ -42,7 +48,7 @@ header a {
 a:active,
 a:hover,
 a.router-link-active {
-  border: 1px solid #cbe13b;;
+  border: 1px solid #cbe13b;
 }
 
 h1 {
