@@ -13,7 +13,8 @@
           <base-button mode="outline" @click="loadMentors(true)"
             >Refresh</base-button
           >
-          <base-button v-if="!isMentor && !isLoading" link to="/register"
+          <base-button link to="/auth" v-if="!isLoggedIn">Login</base-button>
+          <base-button v-if="isLoggedIn && !isMentor && !isLoading" link to="/register"
             >Register as Mentor</base-button
           >
           <!-- button will show if user is not a mentor-->
@@ -67,6 +68,10 @@ export default {
     };
   },
   computed: {
+    //check if user has logged in
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
+    },
     //check if user is already a mentor.
     isMentor() {
       return this.$store.getters["mentors/isMentor"];
