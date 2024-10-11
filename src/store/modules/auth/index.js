@@ -9,7 +9,7 @@ export default {
             // userId: 'c3' //dummy ID
             userId: null,
             token: null,
-            tokenExpiration: null
+            didAutoLogout: false
         }
     },
     getters,
