@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div v-if="selectedMentor">
     <section>
       <base-card>
         <h2>{{ fullName }}</h2>
-        <h3>${{ rate }}/hour</h3>
+        <h3>€{{ rate }}</h3>
       </base-card>
     </section>
     <section>
@@ -11,9 +11,9 @@
         <header>
           <h2>Interested? Reach out now!</h2>
           <base-button link :to="contactLink">Contact</base-button>
-        </header>
-        <router-view></router-view>
-        <!-- where nested child will be rendered-->
+        </header> 
+        <router-view></router-view> 
+        <!-- where nested child will be rendered--> 
       </base-card>
     </section>
     <section>
@@ -32,26 +32,35 @@
 
 <script>
 export default {
-  props: ["id"],
+  props: ["id", 'firstName', 'lastName'],
   data() {
     return {
-      selectedMentor: null,
+      selectedMentor: null
     };
   },
-  created() {
-    this.selectedMentor = this.$store.getters["mentors/mentors"].find(
+  methods: {
+    async loadSelectedMentor() {
+      await this.$store.dispatch('mentor/loadMentors', {
+        forceRefresh: false,
+      });
+
+      this.selectedMentor = this.$store.getters["mentors/mentors"].find(
       (mentor) => mentor.id === this.id
-    );
+      );
+    },
+  },
+  created() {
+    this.loadSelectedMentor()
   },
   computed: {
     fullName() {
-      return this.selectedMentor.firstName + " " + this.selectedMentor.lastName;
+      return `${this.selectedMentor.firstName} ${this.selectedMentor.lastName}`;
     },
     contactLink() {
-      return this.$route.path + "/" + this.id + "/contact";
+      return this.$route.path + "/contact";
     },
     rate() {
-      return this.selectedMentor.hourlyRate;
+      return `${this.selectedMentor.hourlyRate}/hour`;
     },
     areas() {
       return this.selectedMentor.areas;
@@ -59,6 +68,6 @@ export default {
     description() {
       return this.selectedMentor.description;
     },
-  },
+  }
 };
 </script>

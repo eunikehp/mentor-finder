@@ -20,7 +20,7 @@
           <label for="password">Password</label>
           <input type="password" id="password" v-model.trim="password" />
         </div>
-        <p v-if="!formIsValid">
+        <p v-if="!formIsValid" class="message">
           Please enter a valid email and password (must be at least 6 characters
           long).
         </p>
@@ -140,5 +140,9 @@ textarea:focus {
   border-color: #3d008d;
   background-color: #faf6ff;
   outline: none;
+}
+
+.message {
+  color: red;
 }
 </style>

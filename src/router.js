@@ -1,12 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import MentorDetail from './pages/mentors/MentorDetail.vue';
-import MentorRegistration from './pages/mentors/MentorRegistration.vue';
 import MentorsList from './pages/mentors/MentorsList.vue';
-import ContactMentor from './pages/requests/ContactMentor.vue';
-import RequestsReceived from './pages/requests/RequestsReceived.vue';
+// import MentorDetail from './pages/mentors/MentorDetail.vue';
+// import MentorRegistration from './pages/mentors/MentorRegistration.vue';
+// import ContactMentor from './pages/requests/ContactMentor.vue';
+// import RequestsReceived from './pages/requests/RequestsReceived.vue';
 import NotFound from './pages/NotFound.vue';
-import UserAuth from './pages/auth/UserAuth.vue';
+// import UserAuth from './pages/auth/UserAuth.vue';
 import store from './store/index';
+
+//async component
+const MentorDetail = () => import ('./pages/mentors/MentorDetail.vue');
+const MentorRegistration = () => import ('./pages/mentors/MentorRegistration.vue');
+const ContactMentor = () => import ('./pages/requests/ContactMentor.vue');
+const RequestsReceived = () => import ('./pages/requests/RequestsReceived.vue');
+const UserAuth = () => import ('./pages/auth/UserAuth.vue');
+
 
 const router = createRouter({
     history: createWebHistory(),
@@ -27,7 +35,7 @@ const router = createRouter({
 })
 
 //global navigation guard
-router.beforeEach(function(to, from, next) {
+router.beforeEach(function(to, _, next) {
     if(to.meta.requiresAuth && !store.getters.isAuthenticated) {
         next('/auth'); // if user is not authenticated and wanted to access a page that requires authentication,
         // then redirect to the auth page

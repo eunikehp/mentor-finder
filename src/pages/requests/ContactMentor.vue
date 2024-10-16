@@ -1,52 +1,56 @@
 <template>
+  <div>
     <form @submit.prevent="submitForm">
-        <div class="form-control">
-            <label for="email">Your Email</label>
-            <input type="email" id="email" v-model.trim="email"/>
-        </div>
-        <div class="form-control">
-            <label for="message">Message</label>
-            <textarea rows="5" id="message" v-model.trim="message"></textarea>
-        </div>
-        <p class="errors" v-if="!formIsValid" >Please enter a valid email and non-empty message.</p>
-        <div class="actions">
-            <base-button>Send Message</base-button>
-        </div>
+      <div class="form-control">
+        <label for="email">Your Email</label>
+        <input type="email" id="email" v-model.trim="email" />
+      </div>
+      <div class="form-control">
+        <label for="message">Message</label>
+        <textarea rows="5" id="message" v-model.trim="message"></textarea>
+      </div>
+      <p class="errors" v-if="!formIsValid">
+        Please enter a valid email and non-empty message.
+      </p>
+      <div class="actions">
+        <base-button>Send Message</base-button>
+      </div>
     </form>
+  </div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            email: '',
-            message: '',
-            fromIsValid:true,
-        };
-    },
-    methods: {
-        submitForm(){
-            //validate the form
-            this.formIsValid = true;
-            if(this.email === '' || 
-              !this.email.includes('@') || 
-              this.message === '') {
-                this.formIsValid = false;
-                return;
-            }
-            console.log(this.email, this.message)
+  data() {
+    return {
+      email: "",
+      message: "",
+      formIsValid: true,
+    };
+  },
+  methods: {
+    submitForm() {
+      //validate the form
+      this.formIsValid = true;
 
-            //dispatch the input data to store
-            this.$store.dispatch('requests/contactMentor', {
-              email: this.email,
-              message: this.message,
-              mentorId: this.$route.params.id
-            });
-            //redirect page
-            this.$router.replace('/mentors');   
-        }
-    }
-}</script>
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(this.email) || this.message === "") {
+        this.formIsValid = false;
+        return;
+      }
+
+      //dispatch the input data to store
+      this.$store.dispatch("requests/contactMentor", {
+        email: this.email,
+        message: this.message,
+        mentorId: this.$route.params.id,
+      });
+      //redirect page
+      this.$router.replace("/mentors");
+    },
+  },
+};
+</script>
 
 
 <style scoped>

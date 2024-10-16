@@ -1,7 +1,7 @@
 <template>
     <header>
         <nav>
-            <h1><router-link to="/">Find a Mentor</router-link></h1>
+            <h1><router-link to="/">Mentor Finder</router-link></h1>
             <ul>
                 <li><router-link to="/mentors">All Mentors</router-link></li>
                 <li v-if="isLoggedIn"><router-link to="/requests">Requests</router-link></li>
