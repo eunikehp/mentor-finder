@@ -1,35 +1,38 @@
 <template>
-  <the-header></the-header>
-  <router-view v-slot="slotProps">
-    <transition name="route" mode="out-in">
-      <component :is="slotProps.Component"></component>
-    </transition>
-  </router-view> <!-- tell router where to render these components we registered-->
+  <div class="background">
+    <the-header></the-header>
+    <router-view v-slot="slotProps">
+      <transition name="route" mode="out-in">
+        <component :is="slotProps.Component"></component>
+      </transition>
+    </router-view>
+    <!-- tell router where to render these components we registered-->
+  </div>
 </template>
 
 <script>
-import TheHeader from './components/layout/TheHeader.vue'
+import TheHeader from "./components/layout/TheHeader.vue";
+
 export default {
-    components: {
-        TheHeader
+  components: {
+    TheHeader,
+  },
+  computed: {
+    didAutoLogout() {
+      return this.$store.getters.didAutoLogout;
     },
-    computed: {
-      didAutoLogout() {
-        return this.$store.getters.didAutoLogout;
+  },
+  created() {
+    this.$store.dispatch("tryLogin");
+  },
+  watch: {
+    didAutoLogout(curValue, oldValue) {
+      if (curValue && curValue !== oldValue) {
+        this.$router.replace("/mentors");
       }
-    }
-    ,
-    created() {
-      this.$store.dispatch('tryLogin')
     },
-    watch: {
-      didAutoLogout(curValue, oldValue) {
-        if (curValue && curValue !== oldValue) {
-          this.$router.replace('/mentors');
-        }
-      }
-    }
-}
+  },
+};
 </script>
 
 <style>
@@ -45,6 +48,13 @@ html {
 
 body {
   margin: 0;
+}
+
+.background {
+  background-image: url('./assets/background.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 180vh;
 }
 
 .route-enter-from {
