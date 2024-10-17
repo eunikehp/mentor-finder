@@ -25,7 +25,7 @@ const router = createRouter({
             component: MentorDetail, 
             props: true,
             children: [
-            { path: 'contact', component: ContactMentor} // /mentors/m1/contact
+            { path: 'contact', component: ContactMentor, meta: {hideButton:true}} // /mentors/m1/contact
         ]},
         { path: '/register', component: MentorRegistration ,meta: { requiresAuth: true}},
         { path: '/requests', component: RequestsReceived ,meta: { requiresAuth: true}},

@@ -10,7 +10,7 @@
       <base-card>
         <header>
           <h2>Interested? Reach out now!</h2>
-          <base-button link :to="contactLink">Contact</base-button>
+          <base-button link :to="contactLink" v-if=!$route.meta.hideButton @click="hideButton">Contact</base-button>
         </header> 
         <router-view></router-view> 
         <!-- where nested child will be rendered--> 
@@ -31,16 +31,18 @@
 </template>
 
 <script>
+
 export default {
   props: ["id", 'firstName', 'lastName'],
   data() {
     return {
-      selectedMentor: null
+      selectedMentor: null,
+      showButton: true,
     };
   },
   methods: {
     async loadSelectedMentor() {
-      await this.$store.dispatch('mentor/loadMentors', {
+      await this.$store.dispatch('mentors/loadMentors', {
         forceRefresh: false,
       });
 
@@ -48,6 +50,9 @@ export default {
       (mentor) => mentor.id === this.id
       );
     },
+    hideButton() {
+      this.showButton = false;
+    }
   },
   created() {
     this.loadSelectedMentor()
